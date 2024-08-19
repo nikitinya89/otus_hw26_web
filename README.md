@@ -181,10 +181,12 @@ docker compose up -d
   
 ![containers](img/containers.jpg)  
   
-Nginx выполняет роль frontend сервера и проксирует запросы на приложения. В итоге на порту 8081 будет доступен wordpress, на 8082 node.js приложение и на 8083 django.  
+Nginx выполняет роль frontend сервера и проксирует запросы на приложения. В итоге на порту 8081 будет доступен wordpress,  
   
 ![wordpress](img/wordpress.jpg)  
+на 8082 node.js приложение 
 ![node](img/node.jpg)  
+и на 8083 django.
 ![django](img/django.jpg)  
 
 ### Ansible
