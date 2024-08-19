@@ -14,7 +14,7 @@
 - на хостовой системе через конфиги в /etc;
 - деплой через docker-compose.
 ## Выполнение
-Задание выполняется с помощью Docker. Установка:
+Задание выполняется с помощью **Docker**. Установка:
 ```bash
 sudo apt update
 sudo apt install ca-certificates curl
@@ -27,3 +27,11 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
 ```
+Необходимо развернуть 5 docker контейнеров:
+|Название|Образ|Порты|Зависимость|
+|-|-|-|-|
+|nginx|nginx:latest|8081:8081, 8082:8082, 8083:8083|worpdress, node, app|
+|db|mysql:8.0|||
+|wordpress|wordpress:6.6.1-fpm-alpine||db|
+|node|node:16.13.2-alpine3.15|||
+|app||||
