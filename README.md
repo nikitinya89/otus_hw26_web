@@ -185,4 +185,10 @@ Nginx выполняет роль frontend сервера и проксируе�
   
 ![wordpress](img/wordpress.jpg)  
 ![node](img/node.jpg)  
-![django](img/django.jpg)
+![django](img/django.jpg)  
+
+### Ansible
+Для выполнения задания с помощью **ansible** запустим playbook:
+```bash
+ansible-playbook web.yml
+```
