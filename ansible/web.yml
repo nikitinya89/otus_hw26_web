@@ -1,0 +1,76 @@
+---
+- name: Dynamic web
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    mysql_root_password: "Qwerty123"
+    db_name: "wordpress"
+    db_user: "wordpress"
+    db_password: "Qwerty123"
+    app_key: "$ecreT"
+
+  tasks:
+
+    - name: Install packages
+      apt:
+        name:
+          - ca-certificates
+          - curl
+          - python3-docker
+          - python3-pip
+        update_cache: true
+
+    - name: Add docker key
+      get_url:
+        url: "https://download.docker.com/linux/ubuntu/gpg"
+        dest: /etc/apt/keyrings/docker.asc
+        mode: "0644"
+
+    - name: Add docker repository
+      apt_repository:
+        repo: "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+
+    - name: Install docker
+      apt:
+        name: docker-ce
+        state: present
+        update_cache: true
+
+    - name: Install docker-compose
+      get_url:
+        url: "https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-linux-x86_64"
+        dest: /usr/local/bin/docker-compose
+        mode: "0777"
+
+    - name: Install pip docker-compose
+      pip:
+        name: docker-compose
+
+    - name: Add user to docker group
+      user:
+        name: vagrant
+        group: docker
+        append: true
+
+    - name: Copy project folder
+      copy:
+        src: files/project
+        dest: /home/vagrant/
+
+    -  name: Copy .env files
+       template:
+         src: "{{ item }}.j2"
+         dest: "/home/vagrant/project/{{ item }}"
+       with_items:
+         - db.env
+         - wp.env
+         - app.env
+
+    - name: Docker-compose up
+      community.docker.docker_compose:
+        project_src: /home/vagrant/project/
+        state: present
+      vars:
+        ansible_python_interpreter: /bin/python3
